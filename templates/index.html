@@ -1,0 +1,77 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Coisas da Le</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}" />
+  </head>
+  <body>
+    <header>
+      <div class="container nav">
+        <div class="brand">COISAS DA LE</div>
+        <nav class="links">
+          <a href="/">Início</a>
+          <a href="#colecoes">Coleções</a>
+          <a href="#novidades">Novidades</a>
+          <a href="#contato">Contato</a>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero">
+        <div class="container hero-box">
+          <div class="hero-copy">
+            <h1>Estilo que acompanha seu dia.</h1>
+            <p>
+              Descubra peças versáteis, confortáveis e cheias de personalidade para
+              compor looks incríveis em qualquer ocasião.
+            </p>
+            <div class="cta-row">
+              <a class="btn btn-primary" href="#colecoes">Ver coleção</a>
+              <a class="btn btn-secondary" href="#novidades">Novidades</a>
+            </div>
+          </div>
+
+          <div class="hero-card">
+            <img
+              src="https://images.unsplash.com/photo-1483985988355-763728e1935b?auto=format&fit=crop&w=900&q=80"
+              alt="Modelo em roupa moderna"
+            />
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="colecoes">
+        <div class="container">
+          <div class="section-head">
+            <h2>Mais vendidos</h2>
+            <span>Escolhas do momento</span>
+          </div>
+
+          <div class="products">
+            {% for produto in produtos %}
+            <article class="product-card">
+              <img src="{{ produto.imagem }}" alt="{{ produto.nome }}" />
+              <div class="product-info">
+                <span class="product-tag">{{ produto.categoria }}</span>
+                <h3>{{ produto.nome }}</h3>
+                <div class="price-row">
+                  <div class="price">R$ {{ produto.preco }}</div>
+                  <a class="mini-btn" href="{% url 'produto' produto.id %}">Ver mais</a>
+                </div>
+              </div>
+            </article>
+            {% endfor %}
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer id="contato">
+      <div class="container">© 2026 Coisas da Le — Seu estilo em destaque.</div>
+    </footer>
+  </body>
+</html>
