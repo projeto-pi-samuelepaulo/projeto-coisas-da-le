@@ -16,11 +16,27 @@
           <a href="#colecoes">Coleções</a>
           <a href="#novidades">Novidades</a>
           <a href="#contato">Contato</a>
+          {% if user.is_authenticated %}
+          <span>Olá, {{ user.first_name|default:user.username }}</span>
+          <form method="post" action="{% url 'core:logout' %}">
+            {% csrf_token %}
+            <button class="nav-button" type="submit">Sair</button>
+          </form>
+          {% else %}
+          <a href="{% url 'core:login' %}">Entrar</a>
+          {% endif %}
         </nav>
       </div>
     </header>
 
     <main>
+      {% if messages %}
+      <div class="account-notices container" role="status">
+        {% for message in messages %}
+        <p>{{ message }}</p>
+        {% endfor %}
+      </div>
+      {% endif %}
       <section class="hero">
         <div class="container hero-box">
           <div class="hero-copy">
@@ -60,7 +76,7 @@
                 <h3>{{ produto.nome }}</h3>
                 <div class="price-row">
                   <div class="price">R$ {{ produto.preco }}</div>
-                  <a class="mini-btn" href="{% url 'produto' produto.id %}">Ver mais</a>
+                  <a class="mini-btn" href="{% url 'core:produto' produto.id %}">Ver mais</a>
                 </div>
               </div>
             </article>
