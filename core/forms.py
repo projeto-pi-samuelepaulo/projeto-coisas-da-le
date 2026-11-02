@@ -6,6 +6,27 @@ from django.contrib.auth.models import User
 class CadastroForm(UserCreationForm):
     email = forms.EmailField(required=True, label="E-mail")
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields["first_name"].required = True
+        self.fields["username"].widget.attrs.update(
+            {"autocomplete": "username"}
+        )
+        self.fields["first_name"].widget.attrs.update(
+            {"autocomplete": "given-name"}
+        )
+        self.fields["email"].widget.attrs.update(
+            {"autocomplete": "email", "type": "email"}
+        )
+        self.fields["password1"].widget.attrs.update(
+            {"autocomplete": "new-password"}
+        )
+        self.fields["password2"].widget.attrs.update(
+            {"autocomplete": "new-password"}
+        )
+        for field in self.fields.values():
+            field.widget.attrs["class"] = "form-input"
+
     class Meta:
         model = User
         fields = (

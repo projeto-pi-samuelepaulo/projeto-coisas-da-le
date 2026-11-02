@@ -1,4 +1,32 @@
-from django.shortcuts import render
+from django.contrib import messages
+from django.contrib.auth import login
+from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth.views import LoginView
+from django.shortcuts import redirect, render
+
+from .forms import CadastroForm
+
+
+class ClienteLoginView(LoginView):
+    template_name = "registration/login.html"
+    authentication_form = AuthenticationForm
+
+
+def cadastro(request):
+    if request.user.is_authenticated:
+        return redirect("core:home")
+
+    form = CadastroForm(request.POST or None)
+    if request.method == "POST" and form.is_valid():
+        usuario = form.save()
+        login(request, usuario)
+        messages.success(
+            request,
+            f"Bem-vinda, {usuario.first_name}! Seu cadastro foi concluído.",
+        )
+        return redirect("core:home")
+
+    return render(request, "registration/signup.html", {"form": form})
 
 
 def home(request):

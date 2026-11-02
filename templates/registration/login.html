@@ -1,0 +1,60 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Entrar | Coisas da Le</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}" />
+  </head>
+  <body>
+    <header>
+      <div class="container nav">
+        <a class="brand" href="{% url 'core:home' %}">COISAS DA LE</a>
+        <nav class="links">
+          <a href="{% url 'core:home' %}">Voltar à loja</a>
+          <a href="{% url 'core:cadastro' %}">Criar conta</a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="account-page">
+      <section class="account-card" aria-labelledby="login-title">
+        <p class="account-eyebrow">Sua conta</p>
+        <h1 id="login-title">Boas-vindas de volta</h1>
+        <p class="account-intro">Entre para continuar sua experiência na loja.</p>
+
+        {% if messages %}
+        <div class="account-notices" role="status">
+          {% for message in messages %}
+          <p>{{ message }}</p>
+          {% endfor %}
+        </div>
+        {% endif %}
+
+        <form method="post" class="account-form">
+          {% csrf_token %}
+          {% if form.non_field_errors %}
+          <div class="form-errors" role="alert">{{ form.non_field_errors }}</div>
+          {% endif %}
+          {% for field in form %}
+          <div class="form-field">
+            <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+            {{ field }}
+            {% if field.errors %}
+            <div class="form-errors" role="alert">{{ field.errors }}</div>
+            {% endif %}
+          </div>
+          {% endfor %}
+          <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_to }}" />
+          <button class="btn btn-primary account-submit" type="submit">Entrar</button>
+        </form>
+
+        <p class="account-switch">
+          Ainda não tem conta?
+          <a href="{% url 'core:cadastro' %}">Cadastre-se</a>
+        </p>
+      </section>
+    </main>
+  </body>
+</html>

@@ -15,6 +15,15 @@
           <a href="/">Início</a>
           <a href="/">Coleções</a>
           <a href="/">Contato</a>
+          {% if user.is_authenticated %}
+          <span>Olá, {{ user.first_name|default:user.username }}</span>
+          <form method="post" action="{% url 'core:logout' %}">
+            {% csrf_token %}
+            <button class="nav-button" type="submit">Sair</button>
+          </form>
+          {% else %}
+          <a href="{% url 'core:login' %}">Entrar</a>
+          {% endif %}
         </nav>
       </div>
     </header>
