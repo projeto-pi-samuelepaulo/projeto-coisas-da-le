@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Novidades | Coisas da Le
+{% endblock %}
+
+{% block content %}
+
+<main class="page">
+
+    <div class="container">
+
+        <div class="section-head">
+            <div>
+                <h1>Novidades</h1>
+                <span>Confira as peças que chegaram por aqui.</span>
+            </div>
+        </div>
+
+        <div class="products">
+
+            {% for produto in produtos %}
+
+                <article class="product-card">
+
+                    <img src="{{ produto.imagem }}"
+                         alt="{{ produto.nome }}">
+
+                    <div class="product-info">
+
+                        <span class="product-tag">
+                            {{ produto.categoria }}
+                        </span>
+
+                        <h3>{{ produto.nome }}</h3>
+
+                        <p class="small-muted">
+                            {{ produto.descricao }}
+                        </p>
+
+                        <div class="price-row">
+
+                            <strong class="price">
+                                R$ {{ produto.preco }}
+                            </strong>
+
+                            <a class="mini-btn"
+                               href="{% url 'core:produto' produto.id %}">
+                                Ver mais
+                            </a>
+
+                        </div>
+
+                        <form method="post"
+                              action="{% url 'core:adicionar_carrinho' produto.id %}"
+                              class="add-form">
+
+                            {% csrf_token %}
+
+                            <button class="btn btn-primary" type="submit">
+                                Adicionar ao carrinho
+                            </button>
+
+                        </form>
+
+                    </div>
+
+                </article>
+
+            {% endfor %}
+
+        </div>
+
+    </div>
+
+</main>
+
+{% endblock %}
