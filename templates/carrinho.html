@@ -1,0 +1,121 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Carrinho | Coisas da Le
+{% endblock %}
+
+{% block content %}
+
+<main class="page">
+
+    <div class="container">
+
+        <h1>Meu carrinho</h1>
+
+        <p class="small-muted">
+            Confira os produtos antes de finalizar seu pedido.
+        </p>
+
+        {% if itens %}
+
+            <div class="cart-list">
+
+                {% for item in itens %}
+
+                    <article class="cart-item">
+
+                        <img src="{{ item.produto.imagem }}"
+                             alt="{{ item.produto.nome }}">
+
+                        <div class="cart-details">
+
+                            <h3>{{ item.produto.nome }}</h3>
+
+                            <p>
+                                R$ {{ item.produto.preco }} cada
+                            </p>
+
+                            <form method="post"
+                                  action="{% url 'core:atualizar_carrinho' item.produto.id %}"
+                                  class="quantity-form">
+
+                                {% csrf_token %}
+
+                                <label>Quantidade:</label>
+
+                                <input type="number"
+                                       name="quantidade"
+                                       min="0"
+                                       max="20"
+                                       value="{{ item.quantidade }}">
+
+                                <button class="mini-btn" type="submit">
+                                    Atualizar
+                                </button>
+
+                            </form>
+
+                            <form method="post"
+                                  action="{% url 'core:remover_carrinho' item.produto.id %}">
+
+                                {% csrf_token %}
+
+                                <button class="text-button" type="submit">
+                                    Remover
+                                </button>
+
+                            </form>
+
+                        </div>
+
+                        <strong>
+                            R$ {{ item.subtotal|floatformat:2 }}
+                        </strong>
+
+                    </article>
+
+                {% endfor %}
+
+            </div>
+
+            <div class="cart-total">
+
+                <h2>
+                    Total: R$ {{ total|floatformat:2 }}
+                </h2>
+
+                <a class="btn btn-primary"
+                   href="{% url 'core:pagamento' %}">
+
+                    Continuar para pagamento
+
+                </a>
+
+            </div>
+
+        {% else %}
+
+            <div class="empty-cart">
+
+                <h2>Seu carrinho está vazio.</h2>
+
+                <p>
+                    Explore nossas coleções e escolha suas peças favoritas.
+                </p>
+
+                <a class="btn btn-primary"
+                   href="{% url 'core:colecoes' %}">
+
+                    Ver coleções
+
+                </a>
+
+            </div>
+
+        {% endif %}
+
+    </div>
+
+</main>
+
+{% endblock %}

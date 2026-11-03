@@ -1,0 +1,105 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Pagamento | Coisas da Le
+{% endblock %}
+
+{% block content %}
+
+<main class="page">
+
+    <div class="container checkout-layout">
+
+        <section class="account-card checkout-card">
+
+            <span class="account-eyebrow">
+                Última etapa
+            </span>
+
+            <h1>Finalizar compra</h1>
+
+            <p class="account-intro">
+                Informe os dados para entrega e escolha como deseja pagar.
+            </p>
+
+            <form method="post" class="account-form">
+
+                {% csrf_token %}
+
+                {% for field in form %}
+
+                    <div class="form-field">
+
+                        <label for="{{ field.id_for_label }}">
+                            {{ field.label }}
+                        </label>
+
+                        {{ field }}
+
+                        {% if field.errors %}
+                            <div class="form-errors">
+                                {{ field.errors }}
+                            </div>
+                        {% endif %}
+
+                    </div>
+
+                {% endfor %}
+
+                <div class="form-field">
+
+                    <label for="forma_pagamento">
+                        Forma de pagamento
+                    </label>
+
+                    <select class="form-input"
+                            name="forma_pagamento"
+                            id="forma_pagamento">
+
+                        <option value="Pix">Pix</option>
+
+                        <option value="Cartão na entrega">
+                            Cartão na entrega
+                        </option>
+
+                        <option value="Dinheiro na entrega">
+                            Dinheiro na entrega
+                        </option>
+
+                    </select>
+
+                </div>
+
+                <button class="btn btn-primary account-submit"
+                        type="submit">
+
+                    Confirmar pedido
+
+                </button>
+
+            </form>
+
+        </section>
+
+        <aside class="summary-card">
+
+            <h2>Resumo do pedido</h2>
+
+            <p>Valor total</p>
+
+            <div class="price">
+                R$ {{ total|floatformat:2 }}
+            </div>
+
+            <p class="small-muted">
+                O pagamento é apenas demonstrativo neste projeto.
+                Nenhuma cobrança real será realizada.
+            </p>
+
+        </aside>
+
+    </div>
+
+</main>
+
+{% endblock %}

@@ -1,70 +1,85 @@
-{% load static %}
-<!DOCTYPE html>
-<html lang="pt-BR">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>{{ produto.nome }} | Coisas da Le</title>
-    <link rel="stylesheet" href="{% static 'css/styles.css' %}" />
-  </head>
-  <body>
-    <header>
-      <div class="container nav">
-        <div class="brand">COISAS DA LE</div>
-        <nav class="links">
-          <a href="/">Início</a>
-          <a href="/">Coleções</a>
-          <a href="/">Contato</a>
-          {% if user.is_authenticated %}
-          <span>Olá, {{ user.first_name|default:user.username }}</span>
-          <form method="post" action="{% url 'core:logout' %}">
-            {% csrf_token %}
-            <button class="nav-button" type="submit">Sair</button>
-          </form>
-          {% else %}
-          <a href="{% url 'core:login' %}">Entrar</a>
-          {% endif %}
-        </nav>
-      </div>
-    </header>
+{% extends 'base.html' %}
 
-    <main class="page">
-      <div class="container product-layout">
+{% block title %}
+{{ produto.nome }} | Coisas da Le
+{% endblock %}
+
+{% block content %}
+
+<main class="page">
+
+    <div class="container product-layout">
+
         <div class="product-image">
-          <img src="{{ produto.imagem }}" alt="{{ produto.nome }}" />
+            <img src="{{ produto.imagem }}" alt="{{ produto.nome }}">
         </div>
 
         <section class="product-content product-info">
-          <span class="tag">{{ produto.categoria }}</span>
-          <h1>{{ produto.nome }}</h1>
-          <div class="price">R$ {{ produto.preco }}</div>
-          <div class="description">{{ produto.descricao }}</div>
 
-          <div class="specs">
-            <div class="spec">
-              <span class="spec-label">Tamanho</span>
-              <span class="spec-value">{{ produto.tamanho }}</span>
-            </div>
-            <div class="spec">
-              <span class="spec-label">Cor</span>
-              <span class="spec-value">{{ produto.cor }}</span>
-            </div>
-            <div class="spec">
-              <span class="spec-label">Disponibilidade</span>
-              <span class="spec-value">Em estoque</span>
-            </div>
-            <div class="spec">
-              <span class="spec-label">Estilo</span>
-              <span class="spec-value">Casual</span>
-            </div>
-          </div>
+            <span class="tag">
+                {{ produto.categoria }}
+            </span>
 
-          <div class="actions">
-            <a class="btn btn-primary" href="/">Adicionar ao carrinho</a>
-            <a class="btn btn-secondary" href="/">Voltar</a>
-          </div>
+            <h1>{{ produto.nome }}</h1>
+
+            <div class="price">
+                R$ {{ produto.preco }}
+            </div>
+
+            <div class="description">
+                {{ produto.descricao }}
+            </div>
+
+            <div class="specs">
+
+                <div class="spec">
+                    <span class="spec-label">Tamanho</span>
+                    <span class="spec-value">{{ produto.tamanho }}</span>
+                </div>
+
+                <div class="spec">
+                    <span class="spec-label">Cor</span>
+                    <span class="spec-value">{{ produto.cor }}</span>
+                </div>
+
+                <div class="spec">
+                    <span class="spec-label">Disponibilidade</span>
+                    <span class="spec-value">Disponível</span>
+                </div>
+
+                <div class="spec">
+                    <span class="spec-label">Categoria</span>
+                    <span class="spec-value">{{ produto.categoria }}</span>
+                </div>
+
+            </div>
+
+            <div class="actions">
+
+                <form method="post"
+                      action="{% url 'core:adicionar_carrinho' produto.id %}">
+
+                    {% csrf_token %}
+
+                    <button class="btn btn-primary" type="submit">
+                        Adicionar ao carrinho
+                    </button>
+
+                </form>
+
+                <a class="btn btn-secondary"
+                   href="{% url 'core:colecoes' %}">
+
+                    Voltar às coleções
+
+                </a>
+
+            </div>
+
         </section>
-      </div>
-    </main>
-  </body>
-</html>
+
+    </div>
+
+</main>
+
+{% endblock %}

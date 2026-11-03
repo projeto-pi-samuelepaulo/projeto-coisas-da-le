@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Pedido confirmado | Coisas da Le
+{% endblock %}
+
+{% block content %}
+
+<main class="page">
+
+    <div class="container">
+
+        <section class="contact-card confirmation">
+
+            <span class="tag">Pedido registrado</span>
+
+            <h1>Obrigado pela sua compra!</h1>
+
+            <p class="description">
+                Seu pedido foi registrado como demonstração da loja.
+                Nossa equipe entraria em contato para confirmar a entrega.
+            </p>
+
+            <div class="specs">
+
+                <div class="spec">
+                    <span class="spec-label">Nome</span>
+                    <strong>{{ pedido.nome }}</strong>
+                </div>
+
+                <div class="spec">
+                    <span class="spec-label">Telefone</span>
+                    <strong>{{ pedido.telefone }}</strong>
+                </div>
+
+                <div class="spec">
+                    <span class="spec-label">Pagamento escolhido</span>
+                    <strong>{{ pedido.pagamento }}</strong>
+                </div>
+
+                <div class="spec">
+                    <span class="spec-label">Total</span>
+                    <strong>R$ {{ pedido.total }}</strong>
+                </div>
+
+            </div>
+
+            <p>
+                <strong>Endereço:</strong> {{ pedido.endereco }}
+            </p>
+
+            <a class="btn btn-primary"
+               href="{% url 'core:home' %}">
+
+                Voltar à loja
+
+            </a>
+
+        </section>
+
+    </div>
+
+</main>
+
+{% endblock %}

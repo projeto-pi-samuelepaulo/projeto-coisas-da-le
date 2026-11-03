@@ -1,0 +1,86 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>
+        {% block title %}Coisas da Le{% endblock %}
+    </title>
+
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+
+<body>
+
+<header>
+    <div class="container nav">
+
+        <a class="brand" href="{% url 'core:home' %}">
+            COISAS DA LE
+        </a>
+
+        <nav class="links">
+
+            <a href="{% url 'core:home' %}">Início</a>
+
+            <a href="{% url 'core:colecoes' %}">Coleções</a>
+
+            <a href="{% url 'core:novidades' %}">Novidades</a>
+
+            <a href="{% url 'core:contato' %}">Contato</a>
+
+            <a href="{% url 'core:carrinho' %}">
+                Carrinho ({{ request.session.carrinho|length|default:0 }})
+            </a>
+
+            {% if user.is_authenticated %}
+
+                <span>
+                    Olá, {{ user.first_name|default:user.username }}
+                </span>
+
+                <form method="post" action="{% url 'core:logout' %}">
+                    {% csrf_token %}
+                    <button class="nav-button" type="submit">
+                        Sair
+                    </button>
+                </form>
+
+            {% else %}
+
+                <a href="{% url 'core:login' %}">Entrar</a>
+
+            {% endif %}
+
+        </nav>
+
+    </div>
+</header>
+
+{% if messages %}
+
+    <div class="account-notices container">
+
+        {% for message in messages %}
+            <p>{{ message }}</p>
+        {% endfor %}
+
+    </div>
+
+{% endif %}
+
+{% block content %}
+{% endblock %}
+
+<footer>
+    <div class="container">
+        © 2026 Coisas da Le — Seu estilo em destaque.
+    </div>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,100 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Coleções | Coisas da Le
+{% endblock %}
+
+{% block content %}
+
+<main class="page">
+
+    <div class="container">
+
+        <div class="section-head">
+            <div>
+                <h1>Nossas coleções</h1>
+                <span>Encontre peças para o seu estilo.</span>
+            </div>
+        </div>
+
+        <div class="category-list">
+
+            <a class="category-link"
+               href="{% url 'core:colecoes' %}">
+                Todas
+            </a>
+
+            {% for categoria in categorias %}
+
+                <a class="category-link"
+                   href="?categoria={{ categoria|urlencode }}">
+                    {{ categoria }}
+                </a>
+
+            {% endfor %}
+
+        </div>
+
+        <div class="products">
+
+            {% for produto in produtos %}
+
+                <article class="product-card">
+
+                    <img src="{{ produto.imagem }}"
+                         alt="{{ produto.nome }}">
+
+                    <div class="product-info">
+
+                        <span class="product-tag">
+                            {{ produto.categoria }}
+                        </span>
+
+                        <h3>{{ produto.nome }}</h3>
+
+                        <p class="small-muted">
+                            {{ produto.descricao }}
+                        </p>
+
+                        <div class="price-row">
+
+                            <strong class="price">
+                                R$ {{ produto.preco }}
+                            </strong>
+
+                            <a class="mini-btn"
+                               href="{% url 'core:produto' produto.id %}">
+                                Ver mais
+                            </a>
+
+                        </div>
+
+                        <form method="post"
+                              action="{% url 'core:adicionar_carrinho' produto.id %}"
+                              class="add-form">
+
+                            {% csrf_token %}
+
+                            <button class="btn btn-primary" type="submit">
+                                Adicionar ao carrinho
+                            </button>
+
+                        </form>
+
+                    </div>
+
+                </article>
+
+            {% empty %}
+
+                <p>Nenhuma peça encontrada nesta categoria.</p>
+
+            {% endfor %}
+
+        </div>
+
+    </div>
+
+</main>
+
+{% endblock %}
